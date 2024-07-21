@@ -21,6 +21,7 @@ import { Loader2, Loader2Icon } from 'lucide-react'
 import { Label } from '@/components/ui/label'
 import Link from 'next/link'
 import { useToast } from '@/components/ui/use-toast'
+import { pb } from '@/lib/pocketbase'
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -74,7 +75,7 @@ const RegisterPage = () => {
       const record = await pb.collection('users').create(data);
       toast({
         variant: "success",
-        title: "Registred Success",
+        title: "Registration Success",
       })
       router.refresh();
       router.push("/auth/login");

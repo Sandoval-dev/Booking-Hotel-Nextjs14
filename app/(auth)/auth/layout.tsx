@@ -1,11 +1,64 @@
+'use client'
+import { Loader2 } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
-import React from 'react'
+import { useRouter } from 'next/navigation'
+import React, { useEffect, useState } from 'react'
+
 
 interface AuthLayoutProps {
   children: React.ReactNode
 }
 const AuthLayout = ({ children }: AuthLayoutProps) => {
+  const [user, setUser] = useState(null);
+  const router = useRouter();
+  const [isUserLoaded, setIsUserLoaded] = useState(false);
+
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+
+        const authData = localStorage.getItem("pocketbase_auth");
+        if (authData) {
+          const { token, model } = JSON.parse(authData);
+          setUser(model)
+        }
+
+      } catch (error) {
+
+      }
+      finally {
+        setIsUserLoaded(true)
+      }
+
+    }
+    fetchUser();
+  }, [])
+
+  useEffect(() => {
+    //user.email
+    if (isUserLoaded && user) {
+      router.push("/")
+    }
+  }, [isUserLoaded, user, router])
+
+  if (!isUserLoaded) {
+
+    return (
+      <div className='flex items-center justify-center h-screen'>
+        <Loader2 size={48} className='animate-spin' />
+
+      </div>
+    )
+  }
+
+  //user.email
+  if (user) {
+    return null;
+  }
+
+
   return (
     <div className='h-screen flex justify-center items-center bgone'>
       <div className='hidden lg:block w-1/2 h-full'>
