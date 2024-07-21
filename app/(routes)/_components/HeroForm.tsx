@@ -64,7 +64,7 @@ const HeroForm = () => {
             <div className='mx-auto container justify-center flex'>
                 <div className='bg-gray-800 bg-opacity-75 p-6 w-full max-w-5xl shadow-lg rounded-md'>
                     <Form {...form}>
-                        <form onSubmit={form.handleSubmit(onSubmit)} className="grid grid-col-1 md:grid-cols-4">
+                        <form onSubmit={form.handleSubmit(onSubmit)} className="grid grid-col-1 gap-5 md:grid-cols-4">
                             <FormField
                                 control={form.control}
                                 name="arrivalDate"
