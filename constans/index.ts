@@ -1,5 +1,5 @@
 
-export const apiImagesUrl = "https://check-facing.pockethost.io/api/files/"
+export const apiImagesUrl = "https://erdcompany.pockethost.io/api/files"
 
 export const NavMenu =[
     {
@@ -26,22 +26,22 @@ export const NavMenu =[
 
 ]
 
-export const SliderImage = [
-    {
-      id: 1,
-      href: "/slider/1.jpg",
-      alt: "slider 1"
-    },
-    {
-      id: 2,
-      href: "/slider/2.jpg",
-      alt: "slider 2"
-    },
-    {
-      id: 3,
-      href: "/slider/3.jpg",
-      alt: "slider 3"
-    }
-  ];
+// export const SliderImage = [
+//     {
+//       id: 1,
+//       href: "/slider/1.jpg",
+//       alt: "slider 1"
+//     },
+//     {
+//       id: 2,
+//       href: "/slider/2.jpg",
+//       alt: "slider 2"
+//     },
+//     {
+//       id: 3,
+//       href: "/slider/3.jpg",
+//       alt: "slider 3"
+//     }
+//   ];
 
   

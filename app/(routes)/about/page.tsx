@@ -9,27 +9,20 @@ const AboutPage = () => {
   const [user, setUser] = useState(null);
   const router = useRouter();
 
-  useEffect(() => {
-    const fetchUser = async () => {
+  useEffect(()=>{
+    const fetchUser = async()=>{
       const authData = localStorage.getItem("pocketbase_auth");
-      if (authData) {
-        const { token, model } = JSON.parse(authData);
+      if(authData){
+        const {token, model} = JSON.parse(authData);
         setUser(model)
       }
     }
     fetchUser();
-  }, [])
+  },[])
   return (
     <div className='pt-44'>
-      {
-        user ? (
-          <>
-          
-          </>
-        ) : (
-          <div>not login</div>
-        )
-      }
+
+   
     </div>
   )
 }

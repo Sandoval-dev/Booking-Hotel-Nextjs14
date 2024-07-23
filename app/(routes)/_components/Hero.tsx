@@ -1,5 +1,5 @@
 'use client'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import {
     Carousel,
     CarouselContent,
@@ -8,14 +8,52 @@ import {
     CarouselPrevious,
 } from "@/components/ui/carousel"
 import Autoplay from "embla-carousel-autoplay"
-import { SliderImage } from '@/constans'
 import Image from 'next/image'
 import ImagesWaves from '@/components/ImagesWaves'
 import HeroForm from './HeroForm'
+import { getSlider } from '@/actions/getSlider'
+import { apiImagesUrl } from '@/constans'
+import { Skeleton } from '@/components/ui/skeleton'
+import { Slider } from '@/types/types'
 
 
 
 const Hero = () => {
+
+    const [sliderImages, setSliderImages] = useState<Slider[]>([])
+    const [loading, setLoading] = useState(true)
+
+    useEffect(() => {
+        async function fetchSlider() {
+
+            try {
+                const images : Slider[] = await getSlider()
+                setSliderImages(images)
+            } catch (error) {
+                console.log('error images', error)
+            }
+            finally {
+                setLoading(false)
+            }
+        }
+
+        fetchSlider()
+    }, [])
+
+    if (loading || !loading && sliderImages.length===0) {
+        return (
+            <div className='relative h-[32rem]'>
+                <div className='h-[32rem] lg:h-[44rem] w-full relative '>
+                    <Skeleton className='h-full w-full bg-slate-600 ' />
+                    <ImagesWaves myclassName='absolute lg:-bottom-3' />
+
+                </div>
+                <HeroForm />
+            </div>
+        )
+    }
+
+
     return (
         <div className='relative h-[32rem]'>
             <Carousel plugins={[
@@ -27,17 +65,17 @@ const Hero = () => {
                 loop: true,
             }}>
                 <CarouselContent>
-                    {SliderImage.map((image,index) => (
+                    {sliderImages.map((data, index) => (
                         <CarouselItem key={index}>
-                            <Image src={image.href} alt={image.alt} width={1920} height={1080} className='h-[32rem] lg:h-[44rem] object-cover w-full brightness-90' />
-                            <ImagesWaves myclassName='absolute lg:-bottom-3'/>
+                            <Image src={`${apiImagesUrl}/${data.collectionId}/${data.id}/${data.image}`} alt={data.alt} width={1920} height={1080} className='h-[32rem] lg:h-[44rem] object-cover w-full brightness-90' />
+                            <ImagesWaves myclassName='absolute lg:-bottom-3' />
                         </CarouselItem>
                     ))}
                 </CarouselContent>
                 <CarouselPrevious className='hidden lg:flex left-0' />
                 <CarouselNext className='hidden lg:flex right-0' />
             </Carousel>
-            <HeroForm/>
+            <HeroForm />
 
         </div>
 
