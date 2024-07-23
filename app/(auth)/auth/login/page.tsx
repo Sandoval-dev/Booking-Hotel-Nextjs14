@@ -1,8 +1,10 @@
 "use client"
+
+import React, { useState } from 'react'
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
-import React, { useState } from "react"
+
 import { Button } from "@/components/ui/button"
 import {
   Form,
@@ -14,11 +16,12 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { useRouter } from "next/navigation"
-import { Label } from "@/components/ui/label"
-import Link from "next/link"
-import { Loader2 } from "lucide-react"
-import { useToast } from "@/components/ui/use-toast"
+import { useRouter } from 'next/navigation'
+import { Loader2, Loader2Icon } from 'lucide-react'
+import { Label } from '@/components/ui/label'
+import Link from 'next/link'
+import { useToast } from '@/components/ui/use-toast'
+import { pb } from '@/lib/pocketbase'
 
 const formSchema = z.object({
   email: z.string().min(2, {
@@ -31,8 +34,9 @@ const formSchema = z.object({
 
 
 const LoginPage = () => {
-  const router = useRouter()
-  const [isLoading, setIsLoading] = useState(false)
+
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast()
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -43,11 +47,12 @@ const LoginPage = () => {
     },
   })
 
-  const onSubmit = async (data: z.infer<typeof formSchema>) => {
+  const onSubmit = async(data: z.infer<typeof formSchema>) => {
+
     setIsLoading(true)
     try {
 
-
+     
       const record = await pb.collection('users').authWithPassword(
         data.email, data.password
       );
@@ -57,21 +62,24 @@ const LoginPage = () => {
       })
       router.refresh();
       router.push("/");
-
+      
     } catch (error) {
 
       toast({
         variant: "destructive",
         title: "Something went wrong",
       })
-
+      
     }
-    finally {
+    finally{
       setIsLoading(false)
     }
+    
 
-
+   
   }
+
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 w-4/5">
@@ -96,7 +104,7 @@ const LoginPage = () => {
             <FormItem>
               <FormLabel>Password</FormLabel>
               <FormControl>
-                <Input type="password" placeholder="********" {...field} />
+                <Input type='password' placeholder="********" {...field} />
               </FormControl>
 
               <FormMessage />
@@ -121,7 +129,7 @@ const LoginPage = () => {
           Dont have an account
         </Label>
         <Link href="/auth/register" className='mt-10 text-slate-500'>
-          Click here to create a new account
+        Click here to create a new account
         </Link>
 
 
